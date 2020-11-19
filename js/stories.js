@@ -56,15 +56,14 @@ $storySubmitForm.on("submit", addNewStoryToList);
 /**Gets the new story submit form values
  * and add it to the list.
  */
-function addNewStoryToList(evt) {
+async function addNewStoryToList(evt) {
   evt.preventDefault();
   const author = $storySubmitAuthor.val();
   const title = $storySubmitTitle.val();
   const url = $storySubmitUrl.val();
   const formValues= {author, title, url};
 
-  const formValues = getSubmitFormValues();
-  const newStory = storyList.addStory(currentUser, formValues);
+  const newStory = await storyList.addStory(currentUser, formValues);
   const $storyMarkup = generateStoryMarkup(newStory);
 
   $storySubmitForm.trigger("reset");
