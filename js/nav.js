@@ -41,3 +41,26 @@ function navSubmitStory (evt){
   evt.preventDefault();
   $storySubmitForm.show();
 }
+
+$storySubmitForm.on("submit", addNewStoryToList);
+
+/**Gets the new story submit form values and returns an object with the values */
+function getSubmitFormValues() {
+  let author = $storySubmitAuthor.val();
+  let title = $storySubmitTitle.val();
+  let url = $storySubmitUrl.val();
+  
+  $storySubmitForm.trigger("reset");
+
+  return {author, title, url};
+}
+
+/**Adds the new story to the story list*/
+function addNewStoryToList(evt) {
+  evt.preventDefault();
+
+  let formValues = getSubmitFormValues();
+  storyList.addStory(currentUser, formValues);
+}
+
+

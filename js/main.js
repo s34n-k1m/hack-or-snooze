@@ -18,6 +18,10 @@ const $navFavorites = $("#nav-favorites");
 const $navMyStories = $("#nav-my-stories");
 
 const $storySubmitForm = $("#story-submit-form");
+const $storySubmitButton = $("#story-submit-button");
+const $storySubmitAuthor = $("#submit-author");
+const $storySubmitTitle = $("#submit-title");
+const $storySubmitUrl = $("#submit-url");
 
 
 /** To make it easier for individual components to show just themselves, this
