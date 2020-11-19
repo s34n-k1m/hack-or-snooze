@@ -1,3 +1,4 @@
+"use strict";
 const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
 
 /******************************************************************************
@@ -81,11 +82,12 @@ class StoryList {
 
     const newStory = new Story(response.data.story);
     this.stories.unshift(newStory);
-    
+
     return newStory;
   }
 }
-
+//  Hardcoded test story:
+// await storyList.addStory(currentUser, {"author":"Sterling", "title":"Local Ducks Now homeless","url":"http://http.cat"})
 
 /******************************************************************************
  * User: a user in the system (only used to represent the current user)

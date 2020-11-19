@@ -1,3 +1,4 @@
+"use strict";
 /******************************************************************************
  * Handling navbar clicks and updating navbar
  */
@@ -31,4 +32,12 @@ function updateNavOnLogin() {
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
+}
+
+$navSubmit.on("click", navSubmitStory);
+
+/** When a user clicks submit, show the submit form. */
+function navSubmitStory (evt){
+  evt.preventDefault();
+  $storySubmitForm.show();
 }

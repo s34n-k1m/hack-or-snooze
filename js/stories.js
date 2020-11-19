@@ -1,3 +1,4 @@
+"use strict";
 // This is the global list of the stories, an instance of StoryList
 let storyList;
 
@@ -8,6 +9,7 @@ async function getAndShowStoriesOnStart() {
   $storiesLoadingMsg.remove();
 
   putStoriesOnPage();
+
 }
 
 /**
