@@ -64,15 +64,25 @@ class StoryList {
     return new StoryList(stories);
   }
 
-  /** Adds story data to API, makes a Story instance, adds it to story list.
-   * - user - the current instance of User who will post the story
-   * - obj of {title, author, url}
-   *
-   * Returns the new Story instance
-   */
 
-  async addStory( /* user, newStory */) {
-    // UNIMPLEMENTED: complete this function!
+  /** Adds story data to API, makes a Story instance, adds it to story list.
+ * - user - the current instance of User who will post the story
+ * - obj of {title, author, url}
+ *
+ * Returns the new Story instance
+ */
+  async addStory(user, { author, title, url }) {
+    const token = user.loginToken;
+    const response = await axios.post(`${BASE_URL}/stories`,
+      {
+        token,
+        story: { author, title, url }
+      });
+
+    const newStory = new Story(response.data.story);
+    this.stories.unshift(newStory);
+    
+    return newStory;
   }
 }
 
@@ -88,13 +98,13 @@ class User {
    */
 
   constructor({
-                username,
-                name,
-                createdAt,
-                favorites = [],
-                ownStories = []
-              },
-              token) {
+    username,
+    name,
+    createdAt,
+    favorites = [],
+    ownStories = []
+  },
+    token) {
     this.username = username;
     this.name = name;
     this.createdAt = createdAt;
