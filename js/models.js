@@ -22,9 +22,12 @@ class Story {
 
   /** Parses hostname out of URL and returns it. */
 
-  getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+  getHostName(url) {
+    let regex = /[^https:\/\/].*\.[a-zA-Z]{2,5}/;
+    let re = new RegExp(regex);
+    let hostname = url.match(re)
+    console.log(hostname);
+    return hostname;
   }
 }
 
