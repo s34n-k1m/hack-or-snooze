@@ -74,7 +74,9 @@ async function addNewStoryToList(evt) {
   $allStoriesList.prepend($storyMarkup);
 
 }
-
+/**
+ * Toggles Star class, adds story to favorites.
+ */
 function toggleStar(evt) {
   evt.preventDefault();
 
@@ -82,9 +84,23 @@ function toggleStar(evt) {
   let storyId = $(evt.target)
     .closest("li")
     .attr("id");
-    
+  addFavorite(storyId);
 }
 
-$allStoriesList.on("click",".fa-star", toggleStar)
+$allStoriesList.on("click", ".fa-star", toggleStar)
 
+function addFavorite(storyId){
+  let newFaveStory = storyList.getStoryById(storyId);
+  let favIndex = currentUser.favorites
+    .findIndex(story => story.storyId === storyId);
+  // Toggle. Removing element if it is there, adding if it isn't.
+  if (favIndex > -1) {
+    currentUser.favorites.splice(favIndex, 1);
+    deleteFavorite()
+  }
+  else {
+    currentUser.favorites.unshift(newFaveStory);
+    addFavorite()
+  }
 
+}

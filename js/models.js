@@ -22,7 +22,7 @@ class Story {
 
   /** Parses hostname out of URL and returns it. */
 
-  getHostName(url="") {
+  getHostName(url = "") {
     let regex = /[^https:\/\/].*\.[a-zA-Z]{2,5}/;
     let re = new RegExp(regex);
     let hostname = url.match(re)
@@ -91,7 +91,7 @@ class StoryList {
 
 
   getStoryById(id) {
-    // return this.stories.
+    return this.stories.filter(story => story.storyId === id)[0];
   }
 }
 //  Hardcoded test story:
@@ -177,4 +177,31 @@ class User {
       return null;
     }
   }
+  async postAddNewFavorite(storyId) {
+    try {
+      const response = await axios({
+        url: `${BASE_URL}/users/${username}/favorites/${storyId}`,
+        method: "POST",
+        params: { token },
+      });
+      return "Favorite added!";
+    } catch (err) {
+      console.error("add favorites failed", err);
+      return null;
+    }
+  }
+  async deleteFavorite(storyId) {
+    try {
+      const response = await axios({
+        url: `${BASE_URL}/users/${username}/favorites/${storyId}`,
+        method: "DELETE",
+        params: { token },
+      });
+      return "Favorite Deleted.";
+    } catch (err) {
+      console.error("Delete favorites failed", err);
+      return null;
+    }
+  }
+
 }
