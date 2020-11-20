@@ -23,9 +23,11 @@ function generateStoryMarkup(story, isFave = false, isTrash = false) {
   // console.debug("generateStoryMarkup", story);
 
   let starState = (isFave) ? "fas" : "far";
-  let trash = (isTrash) ? `<span class="trash-can">
-                <i class="fas fa-trash-alt"></i>
-               </span>`: "";
+  let trash = (isTrash) 
+      ? `<span class="trash-can">
+            <i class="fas fa-trash-alt"></i>
+        </span>`
+      : "";
 
   const hostName = story.getHostName();
   return $(`
@@ -34,7 +36,7 @@ function generateStoryMarkup(story, isFave = false, isTrash = false) {
         <span class="star">
           <i class="fa-star ${starState}"></i>
         </span>
-        <a href="${story.url}" target="a_blank" class="story-link">
+        <a href="${story.url}" target="_blank" class="story-link">
           ${story.title}
         </a>
         <small class="story-hostname">(${hostName})</small>
@@ -144,8 +146,11 @@ async function deleteMyStory(evt) {
   
   $trashStory.remove();
 
-  storyList.deleteStoryById(trashStoryId);
-  currentUser.deleteMyStory(trashStoryId);
+  if(await storyList.deleteStoryById(trashStoryId)) {
+    currentUser.removeStoryFromUser(trashStoryId);
+  } else {
+    //bootstrap toast
+  }
 
 }
 $allStoriesList.on("click", ".fa-trash-alt", deleteMyStory);

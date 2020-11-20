@@ -89,7 +89,9 @@ class StoryList {
     return newStory;
   }
 
-  /* Deletes story from storyList and makes delete story API request. */
+  /* Deletes story from storyList and makes delete story API request. 
+  Returns true on success. False on failure.
+  */
   async deleteStoryById(storyId) {
     this.stories = this.stories.filter(s => s.storyId !== storyId);
     
@@ -99,10 +101,10 @@ class StoryList {
         method: "DELETE",
         params: { token: currentUser.loginToken },
       });
-      return `My story deleted!`;
+      return true;
     } catch (err) {
       console.error(`Delete my story failed`, err);
-      return null;
+      return false;
     }
   }
 
@@ -232,9 +234,9 @@ class User {
   }
 
   /**
-   * Deletes my story from user object, and calls a API delete request.
+   * Deletes my story from user object.
    */
-  async deleteMyStory(storyId) {
+  async removeStoryFromUser(storyId) {
     this.ownStories = this.ownStories.filter(s => s.storyId !== storyId);
     this.favorites = this.favorites.filter(s => s.storyId !== storyId);
   }
