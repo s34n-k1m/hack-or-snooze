@@ -80,21 +80,23 @@ async function addNewStoryToList(evt) {
 /**
  * Toggles Star class, adds story to favorites.
  */
-function toggleStar(evt) {
+async function toggleStar(evt) {
   evt.preventDefault();
 
   $(evt.target).toggleClass(["far", "fas"]);
-  let storyId = $(evt.target)
+  let faveStoryId = $(evt.target)
     .closest("li")
     .attr("id");
-  currentUser.toggleFavorite(storyId);
+  let story = storyList.stories.find(story => story.storyId === faveStoryId);
+  let method = ($(evt.target).hasClass("fas")) ? "POST" : "DELETE";
+  await currentUser.toggleFavorite(method, story);
 }
 
-$allStoriesList.on("click", ".fa-star", toggleStar)
+$allStoriesList.on("click", ".fa-star", toggleStar);
 
 
-/** Gets list of current user's favorite stories from server, 
- * generates their HTML, and puts on page. 
+/** Gets list of current user's favorite stories from server,
+ * generates their HTML, and puts on page.
  * */
 
 function putFavesOnPage() {
@@ -110,4 +112,3 @@ function putFavesOnPage() {
 
   $allStoriesList.show();
 }
-

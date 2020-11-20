@@ -89,10 +89,6 @@ class StoryList {
     return newStory;
   }
 
-
-  getStoryById(id) {
-    return this.stories.filter(story => story.storyId === id)[0];
-  }
 }
 //  Hardcoded test story:
 // await storyList.addStory(currentUser, {"author":"Sterling", "title":"Local Ducks Now homeless","url":"http://http.cat"})
@@ -177,49 +173,44 @@ class User {
       return null;
     }
   }
-
-  async postAddNewFavorite(token, storyId) {
+  /**
+   * Sends add favorite API request and returns result.
+   */
+  async postAddNewFavorite(story) {
+    this.favorites.unshift(story);
+    await this._request("POST", story.storyId);
+  }
+  /**
+   * Sends delete favorite API request and returns result.
+   */
+  async deleteFavorite(story) {
+    this.favorites = this.favorites.filter(s => s.storyId !== story.storyId);
+    await this._request("DELETE", story.storyId);
+  }
+  /* Private helper function to send API request. */
+  async _request(method, storyId) {
     try {
       const response = await axios({
         url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
-        method: "POST",
-        params: { token },
+        method: `${method}`,
+        params: { token: this.loginToken },
       });
-      return "Favorite added!";
+      return `Favorite ${method}!`;
     } catch (err) {
-      console.error("add favorites failed", err);
+      console.error(`${method} favorites failed`, err);
       return null;
     }
   }
-
-  async deleteFavorite(token, storyId) {
-    try {
-      const response = await axios({
-        url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
-        method: "DELETE",
-        params: { token },
-      });
-      return "Favorite Deleted.";
-    } catch (err) {
-      console.error("Delete favorites failed", err);
-      return null;
-    }
-  }
-
-  async toggleFavorite(storyId) {
-    let newFaveStory = storyList.getStoryById(storyId);
-    let favIndex = this.favorites
-      .findIndex(story => story.storyId === storyId); 
+  /**
+   * Add/Removes favorites from the user class & the API.
+   */
+  async toggleFavorite(method, story) {
     // Toggle. Removing element if it is there, adding if it isn't.
-    if (favIndex > -1) {
-      this.favorites.splice(favIndex, 1);
-      await this.deleteFavorite(this.loginToken, storyId);
+    if (method === "DELETE") {
+      this.deleteFavorite(story)
     }
-    else {
-      this.favorites.unshift(newFaveStory);
-      await this.postAddNewFavorite(this.loginToken, storyId);
+    else if (method === "POST") {
+      this.postAddNewFavorite(story)
     }
-
   }
-
 }
