@@ -44,21 +44,23 @@ function navSubmitStory(evt) {
 }
 
 
-/** Show main list of favorite stories when "favorites" is clicked */
+/** Show list of favorite stories when "favorites" is clicked */
 
 function navFaveStories(evt) {
   console.debug("navFaveStories", evt);
+  $storySubmitForm.hide();
   putFavesOnPage();
 }
 
 $navFavorites.on("click", navFaveStories);
 
-/** Show main list of the user's stories when click "My Stories" */
+
+/** Show list of the user's stories when click "My Stories" */
 
 function navMyStories(evt) {
   console.debug("navMyStories", evt);
+  $storySubmitForm.hide();
   putMyStoriesOnPage();
 }
 
-// $navFavorites.on("click", navFaveStories);
 $navMyStories.on("click", navMyStories);

@@ -41,3 +41,8 @@
 .fa-star:hover {
   cursor: pointer;
 }
+
+.fa-trash-alt:hover {
+  cursor: pointer;
+  color: red;
+}

@@ -89,9 +89,24 @@ class StoryList {
     return newStory;
   }
 
+  /* Deletes story from storyList and makes delete story API request. */
+  async deleteStoryById(storyId) {
+    this.stories = this.stories.filter(s => s.storyId !== storyId);
+    
+    try {
+      const response = await axios({
+        url: `${BASE_URL}/stories/${storyId}`,
+        method: "DELETE",
+        params: { token: currentUser.loginToken },
+      });
+      return `My story deleted!`;
+    } catch (err) {
+      console.error(`Delete my story failed`, err);
+      return null;
+    }
+  }
+
 }
-//  Hardcoded test story:
-// await storyList.addStory(currentUser, {"author":"Sterling", "title":"Local Ducks Now homeless","url":"http://http.cat"})
 
 /******************************************************************************
  * User: a user in the system (only used to represent the current user)
@@ -215,4 +230,13 @@ class User {
       this.postAddNewFavorite(story)
     }
   }
+
+  /**
+   * Deletes my story from user object, and calls a API delete request.
+   */
+  async deleteMyStory(storyId) {
+    this.ownStories = this.ownStories.filter(s => s.storyId !== storyId);
+    this.favorites = this.favorites.filter(s => s.storyId !== storyId);
+  }
+
 }

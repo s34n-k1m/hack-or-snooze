@@ -68,7 +68,9 @@ function putMyStoriesOnPage() {
   console.debug("putMyStoriesOnPage");
   $allStoriesList.empty();
   for (let story of currentUser.ownStories) {
-    const $story = generateStoryMarkup(story, false, true);
+    let isFave = currentUser.favorites.some(s => s.storyId === story.storyId);
+
+    const $story = generateStoryMarkup(story, isFave, true);
     $allStoriesList.append($story);
   }
   $allStoriesList.show();
@@ -132,12 +134,18 @@ $allStoriesList.on("click", ".fa-star", toggleStar);
 
 
 /**
- * Handle trashcan click, deletes myStory.
+ * Handle trashcan click, deletes myStory from storyList and user's
+ * favorites and my story lists.
  */
 async function deleteMyStory(evt) {
   evt.preventDefault();
-  let trashStory = $(evt.target).closest("li");
-  storyList.deleteStory(trashStory);
+  let $trashStory = $(evt.target).closest("li");
+  let trashStoryId = $trashStory.attr("id");
+  
+  $trashStory.remove();
+
+  storyList.deleteStoryById(trashStoryId);
+  currentUser.deleteMyStory(trashStoryId);
 
 }
-$allStoriesList.on("click", ".fa-trash-alt", deleteMyStory)
+$allStoriesList.on("click", ".fa-trash-alt", deleteMyStory);
