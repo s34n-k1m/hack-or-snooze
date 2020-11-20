@@ -25,6 +25,9 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <span class="star">
+          <i class="fa-star far"></i>
+        </span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -61,7 +64,7 @@ async function addNewStoryToList(evt) {
   const author = $storySubmitAuthor.val();
   const title = $storySubmitTitle.val();
   const url = $storySubmitUrl.val();
-  const formValues= {author, title, url};
+  const formValues = { author, title, url };
 
   const newStory = await storyList.addStory(currentUser, formValues);
   const $storyMarkup = generateStoryMarkup(newStory);
@@ -71,3 +74,17 @@ async function addNewStoryToList(evt) {
   $allStoriesList.prepend($storyMarkup);
 
 }
+
+function toggleStar(evt) {
+  evt.preventDefault();
+
+  $(evt.target).toggleClass(["far", "fas"]);
+  let storyId = $(evt.target)
+    .closest("li")
+    .attr("id");
+    
+}
+
+$allStoriesList.on("click",".fa-star", toggleStar)
+
+

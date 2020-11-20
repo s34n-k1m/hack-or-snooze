@@ -22,11 +22,10 @@ class Story {
 
   /** Parses hostname out of URL and returns it. */
 
-  getHostName(url) {
+  getHostName(url="") {
     let regex = /[^https:\/\/].*\.[a-zA-Z]{2,5}/;
     let re = new RegExp(regex);
     let hostname = url.match(re)
-    console.log(hostname);
     return hostname;
   }
 }
@@ -88,6 +87,11 @@ class StoryList {
     user.ownStories.unshift(newStory);
 
     return newStory;
+  }
+
+
+  getStoryById(id) {
+    // return this.stories.
   }
 }
 //  Hardcoded test story:
