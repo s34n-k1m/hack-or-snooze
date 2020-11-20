@@ -55,7 +55,9 @@ function putStoriesOnPage() {
 
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
-    const $story = generateStoryMarkup(story);
+    let isFave = currentUser.favorites.some(s => s.storyId === story.storyId);
+
+    const $story = generateStoryMarkup(story, isFave);
     $allStoriesList.append($story);
   }
 
