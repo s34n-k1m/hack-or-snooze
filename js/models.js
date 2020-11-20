@@ -174,19 +174,21 @@ class User {
     }
   }
   /**
-   * Sends add favorite API request and returns result.
+   * Sends add favorite API request.
    */
   async postAddNewFavorite(story) {
     this.favorites.unshift(story);
     await this._request("POST", story.storyId);
   }
+
   /**
-   * Sends delete favorite API request and returns result.
+   * Sends delete favorite API request.
    */
   async deleteFavorite(story) {
     this.favorites = this.favorites.filter(s => s.storyId !== story.storyId);
     await this._request("DELETE", story.storyId);
   }
+
   /* Private helper function to send API request. */
   async _request(method, storyId) {
     try {
