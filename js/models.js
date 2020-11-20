@@ -108,7 +108,7 @@ class User {
     name,
     createdAt,
     favorites = [],
-    ownStories = []
+    stories = []
   },
     token) {
     this.username = username;
@@ -117,7 +117,7 @@ class User {
 
     // instantiate Story instances for the user's favorites and ownStories
     this.favorites = favorites.map(s => new Story(s));
-    this.ownStories = ownStories.map(s => new Story(s));
+    this.ownStories = stories.map(s => new Story(s));
 
     // store the login token on the user so it's easy to find for API calls.
     this.loginToken = token;
