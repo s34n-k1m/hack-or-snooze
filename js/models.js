@@ -177,10 +177,11 @@ class User {
       return null;
     }
   }
-  async postAddNewFavorite(storyId) {
+
+  async postAddNewFavorite(token, storyId) {
     try {
       const response = await axios({
-        url: `${BASE_URL}/users/${username}/favorites/${storyId}`,
+        url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
         method: "POST",
         params: { token },
       });
@@ -190,10 +191,11 @@ class User {
       return null;
     }
   }
-  async deleteFavorite(storyId) {
+
+  async deleteFavorite(token, storyId) {
     try {
       const response = await axios({
-        url: `${BASE_URL}/users/${username}/favorites/${storyId}`,
+        url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
         method: "DELETE",
         params: { token },
       });
@@ -202,6 +204,22 @@ class User {
       console.error("Delete favorites failed", err);
       return null;
     }
+  }
+
+  async toggleFavorite(storyId) {
+    let newFaveStory = storyList.getStoryById(storyId);
+    let favIndex = currentUser.favorites
+      .findIndex(story => story.storyId === storyId);
+    // Toggle. Removing element if it is there, adding if it isn't.
+    if (favIndex > -1) {
+      currentUser.favorites.splice(favIndex, 1);
+      await this.deleteFavorite(this.loginToken, storyId)
+    }
+    else {
+      currentUser.favorites.unshift(newFaveStory);
+      await this.postAddNewFavorite(this.loginToken, storyId)
+    }
+
   }
 
 }
