@@ -19,15 +19,18 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
-function generateStoryMarkup(story) {
+function generateStoryMarkup(story, isFave = false, isTrash = false) {
   // console.debug("generateStoryMarkup", story);
 
-  let faveIdx = currentUser.favorites.findIndex(favStory => favStory.storyId === story.storyId);
-  let starState = (faveIdx > -1) ? "fas" : "far";
+  let starState = (isFave) ? "fas" : "far";
+  let trash = (isTrash) ? `<span class="trash-can">
+                <i class="fas fa-trash-alt"></i>
+               </span>`: "";
 
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        ${trash}
         <span class="star">
           <i class="fa-star ${starState}"></i>
         </span>
@@ -59,6 +62,38 @@ function putStoriesOnPage() {
 
 $storySubmitForm.on("submit", addNewStoryToList);
 
+/** Gets list of current user's stories from server, generates their HTML, and puts on page. */
+
+function putMyStoriesOnPage() {
+  console.debug("putMyStoriesOnPage");
+  $allStoriesList.empty();
+  for (let story of currentUser.ownStories) {
+    const $story = generateStoryMarkup(story, false, true);
+    $allStoriesList.append($story);
+  }
+  $allStoriesList.show();
+
+}
+
+/** Gets list of current user's favorite stories from server,
+ * generates their HTML, and puts on page.
+ * */
+
+function putFavesOnPage() {
+  console.debug("putFavesOnPage");
+
+  $allStoriesList.empty();
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story, true);
+    $allStoriesList.append($story);
+  }
+
+  $allStoriesList.show();
+}
+
+
 /**Gets the new story submit form values
  * and add it to the list.
  */
@@ -77,6 +112,7 @@ async function addNewStoryToList(evt) {
   $allStoriesList.prepend($storyMarkup);
 
 }
+
 /**
  * Toggles Star class, adds story to favorites.
  */
@@ -95,20 +131,13 @@ async function toggleStar(evt) {
 $allStoriesList.on("click", ".fa-star", toggleStar);
 
 
-/** Gets list of current user's favorite stories from server,
- * generates their HTML, and puts on page.
- * */
+/**
+ * Handle trashcan click, deletes myStory.
+ */
+async function deleteMyStory(evt) {
+  evt.preventDefault();
+  let trashStory = $(evt.target).closest("li");
+  storyList.deleteStory(trashStory);
 
-function putFavesOnPage() {
-  console.debug("putFavesOnPage");
-
-  $allStoriesList.empty();
-
-  // loop through all of our stories and generate HTML for them
-  for (let story of currentUser.favorites) {
-    const $story = generateStoryMarkup(story);
-    $allStoriesList.append($story);
-  }
-
-  $allStoriesList.show();
 }
+$allStoriesList.on("click", ".fa-trash-alt", deleteMyStory)

@@ -44,7 +44,7 @@ function navSubmitStory(evt) {
 }
 
 
-/** Show main list of all stories when click site name */
+/** Show main list of favorite stories when "favorites" is clicked */
 
 function navFaveStories(evt) {
   console.debug("navFaveStories", evt);
@@ -52,3 +52,13 @@ function navFaveStories(evt) {
 }
 
 $navFavorites.on("click", navFaveStories);
+
+/** Show main list of the user's stories when click "My Stories" */
+
+function navMyStories(evt) {
+  console.debug("navMyStories", evt);
+  putMyStoriesOnPage();
+}
+
+// $navFavorites.on("click", navFaveStories);
+$navMyStories.on("click", navMyStories);
