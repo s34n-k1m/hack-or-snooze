@@ -208,16 +208,16 @@ class User {
 
   async toggleFavorite(storyId) {
     let newFaveStory = storyList.getStoryById(storyId);
-    let favIndex = currentUser.favorites
-      .findIndex(story => story.storyId === storyId);
+    let favIndex = this.favorites
+      .findIndex(story => story.storyId === storyId); 
     // Toggle. Removing element if it is there, adding if it isn't.
     if (favIndex > -1) {
-      currentUser.favorites.splice(favIndex, 1);
-      await this.deleteFavorite(this.loginToken, storyId)
+      this.favorites.splice(favIndex, 1);
+      await this.deleteFavorite(this.loginToken, storyId);
     }
     else {
-      currentUser.favorites.unshift(newFaveStory);
-      await this.postAddNewFavorite(this.loginToken, storyId)
+      this.favorites.unshift(newFaveStory);
+      await this.postAddNewFavorite(this.loginToken, storyId);
     }
 
   }

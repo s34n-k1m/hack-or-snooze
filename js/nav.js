@@ -39,8 +39,16 @@ $navSubmit.on("click", navSubmitStory);
 /** When a user clicks submit, show the submit form. */
 function navSubmitStory(evt) {
   evt.preventDefault();
-  $storySubmitForm.show();
+  navAllStories(evt);
+  $storySubmitForm.toggle();
 }
 
-// $storySubmitForm.on("submit", addNewStoryToList);
-// $navMyStories.on("click", )
+
+/** Show main list of all stories when click site name */
+
+function navFaveStories(evt) {
+  console.debug("navFaveStories", evt);
+  putFavesOnPage();
+}
+
+$navFavorites.on("click", navFaveStories);

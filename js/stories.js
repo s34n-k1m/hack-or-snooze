@@ -22,11 +22,14 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
+  let faveIdx = currentUser.favorites.findIndex(favStory => favStory.storyId === story.storyId);
+  let starState = (faveIdx > -1) ? "fas" : "far";
+
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
         <span class="star">
-          <i class="fa-star far"></i>
+          <i class="fa-star ${starState}"></i>
         </span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
@@ -89,4 +92,22 @@ function toggleStar(evt) {
 
 $allStoriesList.on("click", ".fa-star", toggleStar)
 
+
+/** Gets list of current user's favorite stories from server, 
+ * generates their HTML, and puts on page. 
+ * */
+
+function putFavesOnPage() {
+  console.debug("putFavesOnPage");
+
+  $allStoriesList.empty();
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+
+  $allStoriesList.show();
+}
 

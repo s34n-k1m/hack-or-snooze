@@ -48,18 +48,18 @@
 
   <!-- area for stories (all stories, user stories, favorites) -->
   <section class="stories-container container">
-    <form class="hidden" id="story-submit-form">
+    <form action="sent via ajax" class="hidden" id="story-submit-form">
       <div>
         <label for="submit-author">Author: </label>
-        <input type="text" name="author" id="submit-author">
+        <input required type="text" name="author" id="submit-author">
       </div>
       <div>
         <label for="submit-title">Title: </label>
-        <input type="text" name="title" id="submit-title">
+        <input required type="text" name="title" id="submit-title">
       </div>
       <div>
         <label for="submit-url">URL: </label>
-        <input type="text" name="url" id="submit-url">
+        <input required type="url" name="url" id="submit-url">
       </div>
       <button id="story-submit-button">Submit</button>
     </form>
